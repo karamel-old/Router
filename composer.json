@@ -1,5 +1,6 @@
 {
     "name": "karamel/router",
+    "description": "",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -14,5 +15,7 @@
         }
     },
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "karamel/http": "v0.1.5"
+    }
 }

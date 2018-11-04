@@ -3,6 +3,7 @@
 namespace Karamel\Router;
 
 
+
 use Karamel\Router\Exceptions\ActionNotFoundException;
 use Karamel\Router\Exceptions\ControllerNotFpoundException;
 use Karamel\Router\Exceptions\ErrorAtActionNameException;
@@ -79,6 +80,10 @@ class Builder
         if (!method_exists($controller, $action[1]))
             throw new ActionNotFoundException();
 
+        $reflectionMethod = new \ReflectionMethod($controller,$action[1]);
+        $methodParameters = $reflectionMethod->getParameters();
+        if($methodParameters[0]->getClass() == \Karamel\Http\Request::class)
+            array_unshift($parameters,\Karamel\Http\Request::getInstance());
 
         $controller->{$action[1]}(...$parameters);
 

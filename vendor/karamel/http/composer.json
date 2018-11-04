@@ -1,0 +1,19 @@
+{
+  "name": "karamel/http",
+  "description": "http lib",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Amir Kalantar",
+      "email": "amir.kalantar@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Karamel\\Http\\": "src/"
+    }
+  },
+  "minimum-stability": "dev",
+  "require": {}
+}

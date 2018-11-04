@@ -8,6 +8,7 @@ use Karamel\Router\Exceptions\RouteNotFoundException;
  * @return null|string|string[]
  * @throws RouteNotFoundException
  */
+
 function route($name, $arguments)
 {
     $route = \Karamel\Router\Router::getInstance()->newBuilder()->findRouteByName($name);
