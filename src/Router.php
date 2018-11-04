@@ -30,5 +30,5 @@ class Router
     {
         return self::getInstance()->newBuilder()->$name(...$arguments);
     }
-    
+
 }

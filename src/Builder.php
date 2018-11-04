@@ -3,7 +3,6 @@
 namespace Karamel\Router;
 
 
-
 use Karamel\Router\Exceptions\ActionNotFoundException;
 use Karamel\Router\Exceptions\ControllerNotFpoundException;
 use Karamel\Router\Exceptions\ErrorAtActionNameException;
@@ -71,22 +70,21 @@ class Builder
         if (count($action) > 2)
             throw new ErrorAtActionNameException();
 
-        $ctrl = $action[0] ;
+        $ctrl = $action[0];
         if (!class_exists($ctrl))
-            throw new ControllerNotFpoundException() ;
+            throw new ControllerNotFpoundException();
 
         $controller = new $ctrl();
 
         if (!method_exists($controller, $action[1]))
             throw new ActionNotFoundException();
 
-        $reflectionMethod = new \ReflectionMethod($controller,$action[1]);
+        $reflectionMethod = new \ReflectionMethod($controller, $action[1]);
         $methodParameters = $reflectionMethod->getParameters();
-        if($methodParameters[0]->getClass() == \Karamel\Http\Request::class)
-            array_unshift($parameters,\Karamel\Http\Request::getInstance());
+        if ($methodParameters[0]->getClass()->name == \Karamel\Http\Request::class)
+            array_unshift($parameters, \Karamel\Http\Request::getInstance());
 
         $controller->{$action[1]}(...$parameters);
-
     }
 
     public function getRoutes()
@@ -96,8 +94,8 @@ class Builder
 
     public function findRouteByName($name)
     {
-        foreach($this->routes as $item)
-            if($item['name'] == $name)
+        foreach ($this->routes as $item)
+            if ($item['name'] == $name)
                 return $item;
 
     }
