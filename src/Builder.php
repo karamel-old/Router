@@ -26,11 +26,13 @@ class Builder
     public function name($name)
     {
         $this->routes[count($this->routes) - 1]['name'] = $this->joinNames($this->as, $name);
+        return $this;
     }
 
     public function middleware($name)
     {
         $this->routes[count($this->routes) - 1]['middleware'][] = $name;
+        return $this;
     }
 
     public function group($options, $callback)
@@ -88,8 +90,9 @@ class Builder
 
         $reflectionMethod = new \ReflectionMethod($controller, $action[1]);
         $methodParameters = $reflectionMethod->getParameters();
-        if ($methodParameters[0]->getClass()->name == \Karamel\Http\Request::class)
-            array_unshift($parameters, \Karamel\Http\Request::getInstance());
+        if(count($methodParameters) > 0)
+            if ($methodParameters[0]->getClass()->name == \Karamel\Http\Request::class)
+                array_unshift($parameters, \Karamel\Http\Request::getInstance());
 
 
         /*
