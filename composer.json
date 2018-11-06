@@ -16,6 +16,6 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "karamel/http": "v0.1.5"
+        "karamel/http": "v0.1.6"
     }
 }

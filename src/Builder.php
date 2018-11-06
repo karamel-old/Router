@@ -6,6 +6,7 @@ namespace Karamel\Router;
 use Karamel\Router\Exceptions\ActionNotFoundException;
 use Karamel\Router\Exceptions\ControllerNotFpoundException;
 use Karamel\Router\Exceptions\ErrorAtActionNameException;
+use Karamel\Router\Exceptions\RouteMiddlewareNotFoundException;
 use Karamel\Router\Exceptions\RouteNotFoundException;
 use Karamel\Router\Traits\Restful;
 
@@ -25,6 +26,11 @@ class Builder
     public function name($name)
     {
         $this->routes[count($this->routes) - 1]['name'] = $this->joinNames($this->as, $name);
+    }
+
+    public function middleware($name)
+    {
+        $this->routes[count($this->routes) - 1]['middleware'][] = $name;
     }
 
     public function group($options, $callback)
@@ -56,6 +62,7 @@ class Builder
      * @throws ControllerNotFpoundException
      * @throws ErrorAtActionNameException
      * @throws RouteNotFoundException
+     * @throws \ReflectionException
      */
     public function boot($server)
     {
@@ -83,6 +90,21 @@ class Builder
         $methodParameters = $reflectionMethod->getParameters();
         if ($methodParameters[0]->getClass()->name == \Karamel\Http\Request::class)
             array_unshift($parameters, \Karamel\Http\Request::getInstance());
+
+
+        /*
+         * Middleware call
+         */
+        if (count($route['middleware']) > 0) {
+            $kernelClass = \Karamel\Http\HttpKernel::getInstance()->getKernelClass();
+            $httpKernel = $kernelClass::getInstance();
+
+            if (!$httpKernel->checkRouteMiddlewareExists($route['middleware'][0]))
+                throw new RouteMiddlewareNotFoundException("Route middleware not found in provider service");
+
+            $middleWareClass = $httpKernel->getRouteMiddleware($route['middleware'][0]);
+            (new $middleWareClass())->handle(\Karamel\Http\Request::getInstance());
+        }
 
         $controller->{$action[1]}(...$parameters);
     }
@@ -253,5 +275,6 @@ class Builder
         $this->namespace = [];
         $this->as = [];
         $this->routes = [];
+        $this->middleware = [];
     }
 }

@@ -4,27 +4,30 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bcea110b301dfa5646214ad6f6a9a7eb",
+    "content-hash": "849e6101f6e83af1c306a0f1463cbb8b",
     "packages": [
         {
             "name": "karamel/http",
-            "version": "v0.1.5",
+            "version": "v0.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/karamel-pack/http.git",
-                "reference": "cb6f53b33cef746ff8c7dd992e0ec994fe2f663b"
+                "reference": "6ba2727b87bd1121d3d71cbb966d107684378104"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/karamel-pack/http/zipball/cb6f53b33cef746ff8c7dd992e0ec994fe2f663b",
-                "reference": "cb6f53b33cef746ff8c7dd992e0ec994fe2f663b",
+                "url": "https://api.github.com/repos/karamel-pack/http/zipball/6ba2727b87bd1121d3d71cbb966d107684378104",
+                "reference": "6ba2727b87bd1121d3d71cbb966d107684378104",
                 "shasum": ""
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "Karamel\\Http\\": "src/"
-                }
+                },
+                "files": [
+                    "src/Helpers/Helpers.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -37,7 +40,7 @@
                 }
             ],
             "description": "http lib",
-            "time": "2018-11-04T14:34:10+00:00"
+            "time": "2018-11-06T14:42:12+00:00"
         }
     ],
     "packages-dev": [],
