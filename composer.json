@@ -1,21 +1,21 @@
 {
-    "name": "karamel/router",
-    "description": "",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Amir Kalantar",
-            "email": "amir.kalantar@gmail.com"
-        }
-    ],
-    "autoload":{
-        "psr-4":{
-            "Karamel\\Router\\":"src/"
-        }
-    },
-    "minimum-stability": "dev",
-    "require": {
-        "karamel/http": "v0.1.6"
+  "name": "karamel/router",
+  "description": "",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Amir Kalantar",
+      "email": "amir.kalantar@gmail.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Karamel\\Router\\": "src/"
+    }
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "karamel/http": "v0.1.7"
+  }
 }

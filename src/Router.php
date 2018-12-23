@@ -7,11 +7,14 @@ class Router
     private static $instance;
     private $builder;
 
-    public static function getInstance()
+    public static function __callStatic($name, $arguments)
     {
-        if (self::$instance == null)
-            self::$instance = new static;
-        return self::$instance;
+        return self::getInstance()->newBuilder()->$name(...$arguments);
+    }
+
+    public function __call($name, $arguments)
+    {
+        return self::getInstance()->newBuilder()->$name(...$arguments);
     }
 
     public function newBuilder()
@@ -21,14 +24,11 @@ class Router
         return $this->builder;
     }
 
-    public function __call($name, $arguments)
+    public static function getInstance()
     {
-        return self::getInstance()->newBuilder()->$name(...$arguments);
-    }
-
-    public static function __callStatic($name, $arguments)
-    {
-        return self::getInstance()->newBuilder()->$name(...$arguments);
+        if (self::$instance == null)
+            self::$instance = new static;
+        return self::$instance;
     }
 
 }

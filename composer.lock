@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "849e6101f6e83af1c306a0f1463cbb8b",
+    "content-hash": "29c31b32ede0560b69b2705c8b771b26",
     "packages": [
         {
             "name": "karamel/http",
-            "version": "v0.1.6",
+            "version": "v0.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/karamel-pack/http.git",
-                "reference": "6ba2727b87bd1121d3d71cbb966d107684378104"
+                "reference": "5be8f56f86009fc47236a2f93f597e4fc43502b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/karamel-pack/http/zipball/6ba2727b87bd1121d3d71cbb966d107684378104",
-                "reference": "6ba2727b87bd1121d3d71cbb966d107684378104",
+                "url": "https://api.github.com/repos/karamel-pack/http/zipball/5be8f56f86009fc47236a2f93f597e4fc43502b3",
+                "reference": "5be8f56f86009fc47236a2f93f597e4fc43502b3",
                 "shasum": ""
             },
             "type": "library",
@@ -40,7 +40,7 @@
                 }
             ],
             "description": "http lib",
-            "time": "2018-11-06T14:42:12+00:00"
+            "time": "2018-12-18T15:01:45+00:00"
         }
     ],
     "packages-dev": [],

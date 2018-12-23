@@ -23,10 +23,38 @@ class Builder
         $this->defineEmptyArrays();
     }
 
+    private function defineEmptyArrays()
+    {
+        $this->prefix = [];
+        $this->namespace = [];
+        $this->as = [];
+        $this->routes = [];
+        $this->middleware = [];
+    }
+
     public function name($name)
     {
         $this->routes[count($this->routes) - 1]['name'] = $this->joinNames($this->as, $name);
         return $this;
+    }
+
+    private function joinNames()
+    {
+        $arguments = func_get_args();
+        $names = [];
+        foreach ($arguments as $argument) {
+            if (is_array($argument)) {
+                foreach ($argument as $item) {
+                    if ($item != null && $item != "")
+                        $names[] = $item;
+                }
+            } else {
+                if ($argument != null && $argument != "")
+                    $names[] = $argument;
+            }
+        }
+
+        return implode("", $names);
     }
 
     public function middleware($name)
@@ -49,6 +77,17 @@ class Builder
         $callback();
 
         $this->callbackReturn();
+    }
+
+    private function santeizeRoutePath($path)
+    {
+        if (substr($path, 0, 1) == '/')
+            $path = substr($path, 1);
+
+        if (substr($path, strlen($path) - 1, 1) == '/')
+            $path = substr($path, 0, strlen($path) - 1);
+
+        return $path;
     }
 
     private function callbackReturn()
@@ -90,7 +129,7 @@ class Builder
 
         $reflectionMethod = new \ReflectionMethod($controller, $action[1]);
         $methodParameters = $reflectionMethod->getParameters();
-        if(count($methodParameters) > 0)
+        if (count($methodParameters) > 0)
             if ($methodParameters[0]->getClass()->name == \Karamel\Http\Request::class)
                 array_unshift($parameters, \Karamel\Http\Request::getInstance());
 
@@ -109,20 +148,7 @@ class Builder
             (new $middleWareClass())->handle(\Karamel\Http\Request::getInstance());
         }
 
-        $controller->{$action[1]}(...$parameters);
-    }
-
-    public function getRoutes()
-    {
-        return $this->routes;
-    }
-
-    public function findRouteByName($name)
-    {
-        foreach ($this->routes as $item)
-            if ($item['name'] == $name)
-                return $item;
-
+        return $controller->{$action[1]}(...$parameters);
     }
 
     /**
@@ -161,36 +187,6 @@ class Builder
         throw new RouteNotFoundException();
     }
 
-    private function santeizeRoutePath($path)
-    {
-        if (substr($path, 0, 1) == '/')
-            $path = substr($path, 1);
-
-        if (substr($path, strlen($path) - 1, 1) == '/')
-            $path = substr($path, 0, strlen($path) - 1);
-
-        return $path;
-    }
-
-    private function findPathParameters($path)
-    {
-
-        $parameters = [];
-        $sections = explode("/", $path);
-        foreach ($sections as $index => $section) {
-            $matches = [];
-
-            preg_match("/^\{([A-Za-z0-9\_]+)\}$/i", $section, $matches);
-            if (count($matches) > 0) {
-                $parameters[] = [
-                    'index' => $index,
-                    'name' => $matches[1]
-                ];
-            }
-        }
-        return $parameters;
-    }
-
     private function checkSectionIsParameterOrNot($section)
     {
         return preg_match("/^\{([A-Za-z0-9\_]+)\}$/i", $section);
@@ -204,6 +200,19 @@ class Builder
             $variables[] = $pathSection[$parameter['index']];
         }
         return $variables;
+    }
+
+    public function getRoutes()
+    {
+        return $this->routes;
+    }
+
+    public function findRouteByName($name)
+    {
+        foreach ($this->routes as $item)
+            if ($item['name'] == $name)
+                return $item;
+
     }
 
     private function joinPath()
@@ -221,6 +230,17 @@ class Builder
         }
 
         return implode("/", $path);
+    }
+
+    private function addRoute($path, $action, $method)
+    {
+        $this->routes[] = [
+            'method' => $method,
+            'path' => $path,
+            'action' => $this->joinNamespaces($this->namespace, $action),
+            'parameters' => $this->findPathParameters($path)
+        ];
+        return $this;
     }
 
     private function joinNamespaces()
@@ -242,42 +262,22 @@ class Builder
         return implode("\\", $namespaces);
     }
 
-    private function joinNames()
+    private function findPathParameters($path)
     {
-        $arguments = func_get_args();
-        $names = [];
-        foreach ($arguments as $argument) {
-            if (is_array($argument)) {
-                foreach ($argument as $item) {
-                    if ($item != null && $item != "")
-                        $names[] = $item;
-                }
-            } else {
-                if ($argument != null && $argument != "")
-                    $names[] = $argument;
+
+        $parameters = [];
+        $sections = explode("/", $path);
+        foreach ($sections as $index => $section) {
+            $matches = [];
+
+            preg_match("/^\{([A-Za-z0-9\_]+)\}$/i", $section, $matches);
+            if (count($matches) > 0) {
+                $parameters[] = [
+                    'index' => $index,
+                    'name' => $matches[1]
+                ];
             }
         }
-
-        return implode("", $names);
-    }
-
-    private function addRoute($path, $action, $method)
-    {
-        $this->routes[] = [
-            'method' => $method,
-            'path' => $path,
-            'action' => $this->joinNamespaces($this->namespace, $action),
-            'parameters' => $this->findPathParameters($path)
-        ];
-        return $this;
-    }
-
-    private function defineEmptyArrays()
-    {
-        $this->prefix = [];
-        $this->namespace = [];
-        $this->as = [];
-        $this->routes = [];
-        $this->middleware = [];
+        return $parameters;
     }
 }

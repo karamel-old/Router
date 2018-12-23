@@ -26,7 +26,6 @@ class AuthMiddleware
 }
 
 
-
 class Route
 {
     public function boot()

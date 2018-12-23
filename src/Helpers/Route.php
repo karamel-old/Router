@@ -9,7 +9,7 @@ use Karamel\Router\Exceptions\RouteNotFoundException;
  * @throws RouteNotFoundException
  */
 
-function route($name, $arguments)
+function route($name, $arguments = [])
 {
     $route = \Karamel\Router\Router::getInstance()->newBuilder()->findRouteByName($name);
     foreach ($arguments as $key => $value) {

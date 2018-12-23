@@ -1,5 +1,7 @@
 <?php
-namespace Karamel\Router\Exceptions ;
-class  ControllerNotFpoundException extends \Exception{
+
+namespace Karamel\Router\Exceptions;
+class  ControllerNotFpoundException extends \Exception
+{
 
 }
